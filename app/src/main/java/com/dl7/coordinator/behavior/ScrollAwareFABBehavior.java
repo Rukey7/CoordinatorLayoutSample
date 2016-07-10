@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 /**
  * Created by Rukey7 on 2016/7/9.
+ * FAB滚动行为
  */
 public class ScrollAwareFABBehavior extends FloatingActionButton.Behavior {
 

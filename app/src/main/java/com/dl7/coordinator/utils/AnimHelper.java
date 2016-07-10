@@ -11,7 +11,7 @@ import android.view.animation.AccelerateInterpolator;
 public class AnimHelper {
 
     private AnimHelper() {
-
+        throw new RuntimeException("AnimHelper cannot be initialized!");
     }
 
 

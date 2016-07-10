@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:contentScrim="@color/colorPrimary"
-            app:expandedTitleMarginStart="40dp"
+            app:expandedTitleGravity="bottom|center_horizontal"
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
             <ImageView
@@ -26,15 +26,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
-                android:scaleType="centerCrop"
-                android:src="@mipmap/pic"
+                android:scaleType="fitXY"
+                android:src="@mipmap/bane"
                 app:layout_collapseParallaxMultiplier="0.6"
                 app:layout_collapseMode="parallax"/>
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/tool_bar"
                 android:layout_width="match_parent"
-                app:title="Custom Behavior"
+                app:title="Tom Hardy"
                 app:navigationIcon="@android:color/transparent"
                 app:theme="@style/ThemeOverlay.AppCompat.Dark"
                 android:layout_height="@dimen/toolbar_height"
@@ -47,19 +47,14 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <include layout="@layout/layout_scroll_content"/>
+        <include layout="@layout/layout_content_tom"/>
     </android.support.v4.widget.NestedScrollView>
 
-    <!--
-    FloatingActionButton:需要设置app:layout_anchor和app:layout_anchorGravity来实现联动;
-    app:layout_anchor="@id/app_bar":用来设置与id所关联的控件进行协调，即AppBarLayout;
-    app:layout_anchorGravity="bottom|right":用来设置与关联控件的位置关系;
-    -->
     <de.hdodenhof.circleimageview.CircleImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
         app:border_color="@android:color/white"
-        app:border_width="2dp"
+        app:border_width="1dp"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="center"
         android:layout_margin="16dp"

@@ -1,6 +1,7 @@
 package com.dl7.coordinator.behavior;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.util.AttributeSet;
@@ -17,6 +18,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by Rukey7 on 2016/7/9.
+ * 头像行为
  */
 public class AvatarImageBehavior extends CoordinatorLayout.Behavior<CircleImageView> {
 
@@ -34,7 +36,7 @@ public class AvatarImageBehavior extends CoordinatorLayout.Behavior<CircleImageV
     private int mOriginalSize;
     // 控件最终大小
     private int mFinalSize;
-    // 控件最终缩放的大小
+    // 控件最终缩放的尺寸,设置坐标值需要算上该值
     private float mScaleSize;
     // 原始x坐标
     private float mOriginalX;
@@ -46,6 +48,8 @@ public class AvatarImageBehavior extends CoordinatorLayout.Behavior<CircleImageV
     private float mFinalY;
     // 状态栏高度
     private int mStatusBarHeight;
+    // ToolBar高度
+    private int mToolBarHeight;
     // 滚动执行百分比[0~1]
     private float mPercent;
     // Y轴移动插值器
@@ -59,6 +63,13 @@ public class AvatarImageBehavior extends CoordinatorLayout.Behavior<CircleImageV
         mContext = context;
         mMoveYInterpolator = new DecelerateInterpolator();
         mMoveXInterpolator = new AccelerateInterpolator();
+        if (attrs != null) {
+            TypedArray a = mContext.obtainStyledAttributes(attrs, R.styleable.AvatarImageBehavior);
+            mFinalSize = (int) a.getDimension(R.styleable.AvatarImageBehavior_finalSize, 0);
+            mFinalX = a.getDimension(R.styleable.AvatarImageBehavior_finalX, 0);
+            mToolBarHeight = (int) a.getDimension(R.styleable.AvatarImageBehavior_toolBarHeight, 0);
+            a.recycle();
+        }
     }
 
     @Override
@@ -71,22 +82,18 @@ public class AvatarImageBehavior extends CoordinatorLayout.Behavior<CircleImageV
         _initVariables(child, dependency);
 
         mPercent = (mStatusBarHeight - dependency.getY()) * 1.0f / mTotalScrollRange;
-        Log.e("AvatarImageBehavior", "" + mFinalSize);
-        Log.w("AvatarImageBehavior", "" + mFinalY);
-        Log.w("AvatarImageBehavior", "" + child.getY());
-        Log.d("AvatarImageBehavior", "" + MeasureUtil.getStatusBarHeight(mContext));
-
-//        AnimHelper.scaleView(child, mOriginalSize, mFinalSize, mPercent);
-//        AnimHelper.setViewX(child, mOriginalX, mFinalX - mScaleSize, mPercent);
-//        AnimHelper.setViewY(child, mOriginalY, mFinalY - mScaleSize, mPercent);
 
         float percentY = mMoveYInterpolator.getInterpolation(mPercent);
         AnimHelper.setViewY(child, mOriginalY, mFinalY - mScaleSize, percentY);
+
         if (mPercent > ANIM_CHANGE_POINT) {
             float scalePercent = (mPercent - ANIM_CHANGE_POINT) / (1 - ANIM_CHANGE_POINT);
             float percentX = mMoveXInterpolator.getInterpolation(scalePercent);
             AnimHelper.scaleView(child, mOriginalSize, mFinalSize, scalePercent);
             AnimHelper.setViewX(child, mOriginalX, mFinalX - mScaleSize, percentX);
+        } else {
+            AnimHelper.scaleView(child, mOriginalSize, mFinalSize, 0);
+            AnimHelper.setViewX(child, mOriginalX, mFinalX - mScaleSize, 0);
         }
 
         return true;
@@ -122,12 +129,23 @@ public class AvatarImageBehavior extends CoordinatorLayout.Behavior<CircleImageV
         }
         if (mFinalY == 0) {
             mStatusBarHeight = MeasureUtil.getStatusBarHeight(mContext);
-            int toolBarHeight = mContext.getResources().getDimensionPixelSize(R.dimen.toolbar_height);
-            mFinalY = (toolBarHeight - mFinalSize) / 2 + mStatusBarHeight;
+            if (mToolBarHeight == 0) {
+                mToolBarHeight = mContext.getResources().getDimensionPixelSize(R.dimen.toolbar_height);
+            }
+            mFinalY = (mToolBarHeight - mFinalSize) / 2 + mStatusBarHeight;
         }
         if (mScaleSize == 0) {
             mScaleSize = (mOriginalSize - mFinalSize) * 1.0f / 2;
         }
+
+        Log.e("AvatarImageBehavior", ""+dependency.getY());
+        Log.e("AvatarImageBehavior", ""+mTotalScrollRange);
+        Log.w("AvatarImageBehavior", ""+mOriginalSize);
+        Log.w("AvatarImageBehavior", ""+mFinalSize);
+        Log.i("AvatarImageBehavior", ""+child.getY());
+        Log.i("AvatarImageBehavior", ""+mOriginalY);
+        Log.d("AvatarImageBehavior", ""+child.getX());
+        Log.d("AvatarImageBehavior", ""+mOriginalX);
     }
 
 }
