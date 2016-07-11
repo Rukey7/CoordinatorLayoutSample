@@ -5,6 +5,8 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.dl7.coordinator.adapter.DividerItemDecoration;
+
 
 /**
  * Created by long on 2016/3/30.

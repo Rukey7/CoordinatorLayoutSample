@@ -1,4 +1,4 @@
-package com.dl7.coordinator.utils;
+package com.dl7.coordinator.adapter;
 
 import android.content.Context;
 import android.content.res.TypedArray;
