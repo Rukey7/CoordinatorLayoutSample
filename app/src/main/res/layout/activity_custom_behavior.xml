@@ -59,6 +59,6 @@
         app:border_color="@android:color/white"
         app:border_width="1dp"
         app:layout_anchor="@id/collapsing_tool_bar"
-        app:layout_anchorGravity="center"
+        app:layout_anchorGravity="bottom|right"
         app:layout_behavior="com.dl7.coordinator.behavior.AvatarBehavior"/>
 </android.support.design.widget.CoordinatorLayout>
