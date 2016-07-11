@@ -5,7 +5,6 @@ import android.content.res.TypedArray;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
@@ -23,7 +22,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class AvatarImageBehavior extends CoordinatorLayout.Behavior<CircleImageView> {
 
     // 缩放动画变化的支点
-    private static final float ANIM_CHANGE_POINT = 0.3f;
+    private static final float ANIM_CHANGE_POINT = 0.2f;
 
     private Context mContext;
     // 整个滚动的范围
@@ -79,21 +78,22 @@ public class AvatarImageBehavior extends CoordinatorLayout.Behavior<CircleImageV
 
     @Override
     public boolean onDependentViewChanged(CoordinatorLayout parent, CircleImageView child, View dependency) {
-        _initVariables(child, dependency);
+        if (dependency instanceof AppBarLayout) {
+            _initVariables(child, dependency);
+            mPercent = (mAppBarStartY - dependency.getY()) * 1.0f / mTotalScrollRange;
 
-        mPercent = (mAppBarStartY - dependency.getY()) * 1.0f / mTotalScrollRange;
+            float percentY = mMoveYInterpolator.getInterpolation(mPercent);
+            AnimHelper.setViewY(child, mOriginalY, mFinalY - mScaleSize, percentY);
 
-        float percentY = mMoveYInterpolator.getInterpolation(mPercent);
-        AnimHelper.setViewY(child, mOriginalY, mFinalY - mScaleSize, percentY);
-
-        if (mPercent > ANIM_CHANGE_POINT) {
-            float scalePercent = (mPercent - ANIM_CHANGE_POINT) / (1 - ANIM_CHANGE_POINT);
-            float percentX = mMoveXInterpolator.getInterpolation(scalePercent);
-            AnimHelper.scaleView(child, mOriginalSize, mFinalSize, scalePercent);
-            AnimHelper.setViewX(child, mOriginalX, mFinalX - mScaleSize, percentX);
-        } else {
-            AnimHelper.scaleView(child, mOriginalSize, mFinalSize, 0);
-            AnimHelper.setViewX(child, mOriginalX, mFinalX - mScaleSize, 0);
+            if (mPercent > ANIM_CHANGE_POINT) {
+                float scalePercent = (mPercent - ANIM_CHANGE_POINT) / (1 - ANIM_CHANGE_POINT);
+                float percentX = mMoveXInterpolator.getInterpolation(scalePercent);
+                AnimHelper.scaleView(child, mOriginalSize, mFinalSize, scalePercent);
+                AnimHelper.setViewX(child, mOriginalX, mFinalX - mScaleSize, percentX);
+            } else {
+                AnimHelper.scaleView(child, mOriginalSize, mFinalSize, 0);
+                AnimHelper.setViewX(child, mOriginalX, mFinalX - mScaleSize, 0);
+            }
         }
 
         return true;
@@ -134,39 +134,6 @@ public class AvatarImageBehavior extends CoordinatorLayout.Behavior<CircleImageV
         if (mScaleSize == 0) {
             mScaleSize = (mOriginalSize - mFinalSize) * 1.0f / 2;
         }
-
-        Log.e("AvatarImageBehavior", ""+mAppBarStartY);
-        Log.e("AvatarImageBehavior", ""+mTotalScrollRange);
-        Log.w("AvatarImageBehavior", ""+mOriginalSize);
-        Log.w("AvatarImageBehavior", ""+mFinalSize);
-        Log.i("AvatarImageBehavior", ""+child.getY());
-        Log.i("AvatarImageBehavior", ""+mOriginalY);
-        Log.d("AvatarImageBehavior", ""+child.getX());
-        Log.d("AvatarImageBehavior", ""+mOriginalX);
-        Log.d("AvatarImageBehavior", ""+mFinalX);
-        Log.d("AvatarImageBehavior", ""+ (mFinalX - mScaleSize));
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 
 }

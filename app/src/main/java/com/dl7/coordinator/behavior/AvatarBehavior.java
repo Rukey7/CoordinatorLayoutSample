@@ -137,6 +137,11 @@ public class AvatarBehavior extends CoordinatorLayout.Behavior<CircleImageView> 
         return true;
     }
 
+    /**
+     * 初始化变量
+     * @param child
+     * @param dependency
+     */
     private void _initVariables(CircleImageView child, View dependency) {
         if (mAppBarHeight == 0) {
             mAppBarHeight = dependency.getHeight();
@@ -176,5 +181,4 @@ public class AvatarBehavior extends CoordinatorLayout.Behavior<CircleImageView> 
             mFinalViewMarginBottom = (mToolBarHeight - mFinalSize) / 2;
         }
     }
-
 }

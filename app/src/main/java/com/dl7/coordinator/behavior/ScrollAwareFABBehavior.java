@@ -89,5 +89,4 @@ public class ScrollAwareFABBehavior extends FloatingActionButton.Behavior {
         }
         return marginBottom;
     }
-
 }
