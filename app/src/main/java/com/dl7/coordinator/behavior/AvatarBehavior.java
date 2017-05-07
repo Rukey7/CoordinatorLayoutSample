@@ -131,6 +131,11 @@ public class AvatarBehavior extends CoordinatorLayout.Behavior<CircleImageView> 
                 mFinalView.setBorderColor(child.getBorderColor());
                 int borderWidth = (int) ((mFinalSize * 1.0f / mOriginalSize) * child.getBorderWidth());
                 mFinalView.setBorderWidth(borderWidth);
+            } else {
+                mFinalView.setImageDrawable(child.getDrawable());
+                mFinalView.setBorderColor(child.getBorderColor());
+                int borderWidth = (int) ((mFinalSize * 1.0f / mOriginalSize) * child.getBorderWidth());
+                mFinalView.setBorderWidth(borderWidth);
             }
         }
 
@@ -139,6 +144,7 @@ public class AvatarBehavior extends CoordinatorLayout.Behavior<CircleImageView> 
 
     /**
      * 初始化变量
+     *
      * @param child
      * @param dependency
      */

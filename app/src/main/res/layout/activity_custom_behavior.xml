@@ -52,6 +52,7 @@
 
     <!-- layout_anchor属性5.0以上需要设置为CollapsingToolbarLayout，不然头像最后会被覆盖 -->
     <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_avatar"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_margin="16dp"
@@ -59,6 +60,6 @@
         app:border_color="@android:color/white"
         app:border_width="1dp"
         app:layout_anchor="@id/collapsing_tool_bar"
-        app:layout_anchorGravity="bottom|right"
+        app:layout_anchorGravity="center"
         app:layout_behavior="com.dl7.coordinator.behavior.AvatarBehavior"/>
 </android.support.design.widget.CoordinatorLayout>
